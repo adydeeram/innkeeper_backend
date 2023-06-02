@@ -8,8 +8,7 @@ const app = express();
 app.use(
   CORS({
     origin: [
-      "http://localhost:5173",
-      "https://innkeeper-frontend.vercel.app/",
+      "*",
     ],
   })
 );
