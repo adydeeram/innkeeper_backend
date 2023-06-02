@@ -21,7 +21,6 @@ const getBooking = async (id) => {
    res = await Bookings.findById(id);
   const roomDetails = await Room.findOne({roomNumber : res.assignRoomNo})
   res.roomRate = roomDetails.perDayCharge
-  console.log(res, 'asd');
   return res;
 };
 
