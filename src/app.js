@@ -9,6 +9,7 @@ app.use(
   CORS({
     origin: [
       "*",
+      "https://innkeeper-frontend.vercel.app"
     ],
   })
 );
