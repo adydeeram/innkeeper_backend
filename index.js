@@ -1,6 +1,7 @@
 const http = require("http");
 const app = require("./src/app");
 const mongoose = require("mongoose");
+require('dotenv').config()
 
 const PORT = process.env.PORT || 4200;
 const server = http.createServer(app);

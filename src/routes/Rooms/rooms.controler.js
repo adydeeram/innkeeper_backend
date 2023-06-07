@@ -1,49 +1,84 @@
-const { createNewRoom, getAllRooms, getSingleRoom } = require("../../models/rooms.model");
+const {
+  createNewRoom,
+  getAllRooms,
+  getSingleRoom,
+} = require("../../models/rooms.model");
+const jwt = require("jsonwebtoken");
 
-const httpCreateNewRoom = (req, res) => {
+const httpCreateNewRoom = async (req, res) => {
   try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({
+        message: "Error",
+        message: "No bearer token provided",
+      });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET_KEY);
+
     const data = req.body;
     createNewRoom(data);
-    res.status(201).json({
-      status: "Success",
+    return res.status(201).json({
+      message: "Room has been added successfully",
       data: data,
     });
   } catch (error) {
-    res.status(400).json({
-      status: "fail",
-      data: error,
+    return res.status(400).json({
+      message: "Error",
+      data: error.message,
     });
   }
 };
 
 const httpGetAllRooms = async (req, res) => {
   try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({
+        message: "Error",
+        message: "No bearer token provided",
+      });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET_KEY);
+
     const rooms = await getAllRooms();
-    res.status(200).json({
-      status: "Success",
+    return res.status(200).json({
+      message: "Success",
       data: rooms,
     });
   } catch (error) {
-    res.status(400).json({
-      status: "Error",
-      data: error,
+    return res.status(400).json({
+      message: "Error",
+      data: error.message,
     });
   }
 };
 
-const httpGetSigleRoom = async (req,res) => {
+const httpGetSigleRoom = async (req, res) => {
   try {
-    const room = await getSingleRoom(req.params.id)
-    res.status(200).json({
-      status: 'Success',
-      data: room
-    })
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({
+        message: "Error",
+        message: "No bearer token provided",
+      });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+    const room = await getSingleRoom(req.params.id);
+    return res.status(200).json({
+      message: "Success",
+      data: room,
+    });
   } catch (error) {
-    res.status(400).json({
-      status: "Error",
-      data: error,
+    return res.status(400).json({
+      message: "Error",
+      data: error.message,
     });
   }
-}
+};
 
-module.exports = { httpCreateNewRoom, httpGetAllRooms,httpGetSigleRoom };
+module.exports = { httpCreateNewRoom, httpGetAllRooms, httpGetSigleRoom };

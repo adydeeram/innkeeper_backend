@@ -17,15 +17,17 @@ const getBookings = async () => {
 };
 
 const getBooking = async (id) => {
-  let res = {}
-   res = await Bookings.findById(id);
-  const roomDetails = await Room.findOne({roomNumber : res.assignRoomNo})
-  res.roomRate = roomDetails.perDayCharge
+  let res = {};
+  res = await Bookings.findById(id);
+  const roomDetails = await Room.findOne({ roomNumber: res.assignRoomNo });
+  res.roomRate = roomDetails.perDayCharge;
   return res;
 };
 
 const deleteBooking = async (id) => {
-  const res = await Bookings.findByIdAndDelete(id);
+  const res = await Bookings.findById(id);
+  res.bookingStatus = false;
+  res.save()
   return res;
 };
 
